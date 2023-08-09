@@ -7,7 +7,7 @@ import retrofit.ApiInterface
 
 class MovieRepository {
 
-    private val tmdbService: ApiInterface
+    private val tmdbApiInterface: ApiInterface
 
     init {
         val retrofit = Retrofit.Builder()
@@ -15,11 +15,11 @@ class MovieRepository {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        tmdbService = retrofit.create(ApiInterface::class.java)
+        tmdbApiInterface = retrofit.create(ApiInterface::class.java)
     }
 
     suspend fun fetchMovies(category: String): List<Movie> {
-        val response = tmdbService.getMovies(category, ApiInterface.API_KEY)
+        val response = tmdbApiInterface.getMovies(category, ApiInterface.API_KEY)
         if (response.isSuccessful) {
             return response.body()?.results ?: emptyList()
         } else {

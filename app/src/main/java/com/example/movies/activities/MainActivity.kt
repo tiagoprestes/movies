@@ -1,12 +1,16 @@
 package com.example.movies.activities
 
+import android.R
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.movies.adapter.MovieAdapter
 import com.example.movies.databinding.ActivityMainBinding
+import com.example.movies.fragments.MovieDetailsFragment
 import com.example.movies.model.Movie
 import com.example.movies.viewModel.MovieViewModel
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,8 +50,17 @@ class MainActivity : AppCompatActivity() {
                 it,
                 object : MovieAdapter.ClickItemListener {
                     override fun onClicked(model: Any, position: Int) {
+                        loadFragment(MovieDetailsFragment.newInstance(it.get(position)))
                     }
                 })
         }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(com.example.movies.R.id.fragmentContainer, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }
